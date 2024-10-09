@@ -1,12 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Feedback from "./components/Feedback/Feedback";
 import Options from "./components/Options/Options";
 
 function App() {
-	const [good, setGood] = useState(0);
-	const [neutral, setNeutral] = useState(0);
-	const [bad, setBad] = useState(0);
+	const [good, setGood] = useState(() => {
+		// Зчитуємо значення за ключем
+		const savedGood = window.localStorage.getItem("good");
+		// Якщо там щось є, повертаємо це значення як початкове значення стану
+		if (savedGood !== null) {
+			return JSON.parse(savedGood);
+		}
+		// У протилежному випадку повертаємо яке-небудь значення за замовчуванням
+		return 0;
+	});
+	const [neutral, setNeutral] = useState(() => {
+		// Зчитуємо значення за ключем
+		const savedNeutral = window.localStorage.getItem("neutral");
+		// Якщо там щось є, повертаємо це значення як початкове значення стану
+		if (savedNeutral !== null) {
+			return JSON.parse(savedNeutral);
+		}
+		// У протилежному випадку повертаємо яке-небудь значення за замовчуванням
+		return 0;
+	});
+	const [bad, setBad] = useState(() => {
+		// Зчитуємо значення за ключем
+		const savedBad = window.localStorage.getItem("bad");
+		// Якщо там щось є, повертаємо це значення як початкове значення стану
+		if (savedBad !== null) {
+			return JSON.parse(savedBad);
+		}
+		// У протилежному випадку повертаємо яке-небудь значення за замовчуванням
+		return 0;
+	});
+	useEffect(() => {
+		window.localStorage.setItem("good", good);
+		window.localStorage.setItem("neutral", neutral);
+		window.localStorage.setItem("bad", bad);
+	}, [good, neutral, bad]);
 
 	const updateFeedback = (event) => {
 		switch (event.target.name) {
